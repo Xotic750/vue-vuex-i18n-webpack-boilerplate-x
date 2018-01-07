@@ -1,0 +1,6 @@
+/dist/
+/test/unit/coverage/
+/node_modules/
+!.eslintrc.js
+!.stylelintrc.js
+!.postcssrc.js
