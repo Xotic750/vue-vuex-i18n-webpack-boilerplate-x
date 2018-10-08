@@ -1,12 +1,13 @@
 import 'whatwg-fetch';
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-// https://vuejs.org/v2/guide/installation.html
-import Vue from 'vue';
+import 'Src/vue';
 import 'Src/logger';
 import 'Src/sentry';
 import 'Src/iview';
 import 'Src/click_outside';
+// The Vue build version to load with the `import` command
+// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+// https://vuejs.org/v2/guide/installation.html
+import Vue from 'vue';
 import store from 'Src/store';
 import i18n from 'Src/i18n';
 import App from 'Src/App.vue';
@@ -14,9 +15,6 @@ import router from 'Src/router';
 import {name, version} from 'RootDir/package.json';
 
 logger.info(`${name} v${version}`);
-
-Vue.config.silent = process.env.NODE_ENV === 'production';
-Vue.config.productionTip = !Vue.config.silent;
 
 // Initialise the vue app.
 export default new Vue({

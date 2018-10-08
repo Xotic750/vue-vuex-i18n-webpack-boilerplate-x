@@ -6,11 +6,9 @@ import Vue from 'vue';
 import iView from 'iview';
 // https://lodash.com/
 import noop from 'lodash/noop';
-
 import i18n from 'Src/i18n';
 
 Vue.use(iView);
-
 Vue.locale = noop;
 
 // Required to enable iView translations.

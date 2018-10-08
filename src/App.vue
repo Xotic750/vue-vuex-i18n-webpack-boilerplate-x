@@ -27,18 +27,20 @@
           placement="left"
           :content="changeLanguage"
         >
-          <Select
-            :value="$i18n.locale"
-            @on-change="onChange"
-          >
-            <Option
-              v-for="language in languages"
-              :key="language"
-              :value="language"
+          <label>
+            <Select
+              :value="$i18n.locale"
+              @on-change="onChange"
             >
-              {{ language }}
-            </Option>
-          </Select>
+              <Option
+                v-for="language in languages"
+                :key="language"
+                :value="language"
+              >
+                {{ language }}
+              </Option>
+            </Select>
+          </label>
         </tooltip>
       </div>
       <div id="logo">
@@ -184,7 +186,7 @@ export default {
 
 <style>
 @import '~iview/dist/styles/iview.css';
-@import '../src/styles/App.css';
+@import '~Src/styles/App.css';
 
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

@@ -31,7 +31,8 @@
           Twitter
         </a>
       </li>
-      <br>
+    </ul>
+    <ul>
       <li>
         <a
           href="http://vuejs-templates.github.io/webpack/"
@@ -98,8 +99,8 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-@import '../../src/styles/HelloWorld.css';
+<style scoped lang="less">
+@import '~Src/styles/HelloWorld.less';
 
 h1,
 h2 {

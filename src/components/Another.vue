@@ -53,8 +53,8 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-@import '../../src/styles/Another.css';
+<style scoped lang="scss">
+@import '~Src/styles/Another.scss';
 
 #lipsum {
   width: 60%;
