@@ -5,25 +5,20 @@ import Vue from 'vue';
 // https://docs.sentry.io/clients/javascript/integrations/vue/
 import Raven from 'raven-js';
 import RavenVue from 'raven-js/plugins/vue';
+import {version} from 'RootDir/package.json';
 
-import {
-  version,
-} from '~/package.json';
-
-const {
-  NODE_ENV,
-} = process.env;
+const {NODE_ENV} = process.env;
 
 if (NODE_ENV === 'production') {
   // Configure your sentry url.
   // https://docs.sentry.io/
   const SENTRY_URL = '';
+
   if (SENTRY_URL) {
-    Raven
-      .config(SENTRY_URL, {
-        environment: NODE_ENV,
-        release: version,
-      })
+    Raven.config(SENTRY_URL, {
+      environment: NODE_ENV,
+      release: version,
+    })
       .addPlugin(RavenVue, Vue)
       .install();
 

@@ -1,66 +1,83 @@
 const path = require('path');
-const utils = require('./utils');
-const webpack = require('webpack');
-const config = require('../config');
-const vueLoaderConfig = require('./vue-loader.conf');
+// const webpack = require('webpack');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
+const utils = require('./utils');
+const config = require('../config');
+const vueLoaderConfig = require('./vue-loader.conf');
 
-// If the file is greater than the limit (in bytes) the file-loader is used by default
-// and all query parameters are passed to it.
-// https://github.com/webpack-contrib/url-loader
-const urlLoaderBytesLimit = 8192;
+/**
+ * The NODE_ENV environment variable.
+ * @type {!Object}
+ */
+const {NODE_ENV} = process.env;
 
-const resolve = dir => path.join(__dirname, '..', dir);
+/**
+ * The production string.
+ * @type {string}
+ */
+const PRODUCTION = 'production';
 
-// https://github.com/github/fetch
-// https://github.com/webpack-contrib/imports-loader
-// https://github.com/webpack-contrib/exports-loader
-// https://webpack.js.org/guides/migrating/#automatic-loader-module-name-extension-removed
-const WHATWG_FETCH = 'imports-loader?this=>global!exports-loader?global.fetch!whatwg-fetch';
+/**
+ * The development string.
+ * @type {string}
+ */
+// const DEVELOPMENT = 'development';
 
-// https://github.com/MoOx/eslint-loader
+const resolve = (dir) => path.join(__dirname, '..', dir);
+const src = resolve('src');
+const INCLUDE = [src, resolve('__tests__')];
+
+/**
+ * Shared (.js & .vue) eslint-loader options.
+ * @type {!Object}
+ * @see {@link https://github.com/MoOx/eslint-loader}
+ */
 const eslintLoader = {
   loader: 'eslint-loader',
-  enforce: 'pre',
   options: {
     emitError: true,
     emitWarning: !config.dev.showEslintErrorsInOverlay,
-    failOnError: true,
+    failOnError: config.build.failOnLintErrors,
     failOnWarning: false,
-    formatter: require('eslint-friendly-formatter'),
-    quiet: true,
+    quiet: NODE_ENV === PRODUCTION,
   },
 };
 
 const createLintingRule = () => ({
-  test: /\.(js|vue|json)$/,
-  include: [resolve('src'), resolve('test')],
+  enforce: 'pre',
+  test: /\.(js|vue)$/,
+  include: INCLUDE,
   ...eslintLoader,
 });
 
 // https://github.com/babel/babel-loader
 const babelLoader = {
+  include: INCLUDE,
   loader: 'babel-loader',
-  options: {
-    plugins: ['lodash'],
-    presets: [['env', {
-      modules: false,
-      targets: {
-        node: 8,
-      },
-    }]],
-  },
 };
+
+/**
+ * If the file is greater than the limit (in bytes) the file-loader is used by default
+ * and all query parameters are passed to it.
+ *
+ * In development, we are unable to serve files so url encode everything.
+ *
+ * @type {number}
+ * @see {@link https://github.com/webpack-contrib/url-loader#limit}
+ */
+const urlLoaderBytesLimit = NODE_ENV === PRODUCTION ? 8192 : Number.MAX_SAFE_INTEGER;
 
 // A webpack plugin to lint your CSS/Sass code using stylelint.
 // https://github.com/JaKXz/stylelint-webpack-plugin
-const createLintingPlugin = () => new StyleLintPlugin({
-  emitErrors: true,
-  failOnError: false, // https://github.com/JaKXz/stylelint-webpack-plugin/issues/103
-  files: ['**/{src,test}/*.+(css|sass|scss|less|vue)'],
-  quiet: true, // https://github.com/JaKXz/stylelint-webpack-plugin/issues/61
-});
+const createLintingPlugin = () =>
+  new StyleLintPlugin({
+    emitErrors: config.build.failOnLintErrors,
+    failOnError: false, // https://github.com/JaKXz/stylelint-webpack-plugin/issues/103
+    files: ['**/*.+(css|sass|scss|less|vue)'],
+    quiet: true, // https://github.com/JaKXz/stylelint-webpack-plugin/issues/61
+  });
 
 module.exports = {
   context: resolve(''),
@@ -79,15 +96,31 @@ module.exports = {
     extensions: ['.js', ',jsx', '.vue', '.json'],
     alias: {
       vue$: 'vue/dist/vue.esm.js',
-      '@': resolve('src'),
-      '~': resolve(''),
+      Src: src,
+      RootDir: resolve(''),
     },
   },
 
   module: {
     rules: [
+      /**
+       * Extract sourceMappingURL comments from modules and offer it to webpack
+       * @see {@link https://github.com/webpack-contrib/source-map-loader}
+       */
+      {
+        enforce: 'pre',
+        loader: 'source-map-loader',
+        test: /\.js$/,
+      },
+
       ...(config.dev.useEslint ? [createLintingRule()] : []),
 
+      /**
+       * vue-loader is a loader for webpack that can transform Vue components written
+       * in the following format into a plain JavaScript module.
+       * @type {!Object}
+       * @see {@link https://vue-loader.vuejs.org/en/}
+       */
       {
         test: /\.vue$/,
         loaders: [
@@ -113,7 +146,7 @@ module.exports = {
 
       {
         test: /\.js$/,
-        include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')],
+        include: INCLUDE.concat(resolve('node_modules/webpack-dev-server/client')),
         ...babelLoader,
       },
 
@@ -147,24 +180,20 @@ module.exports = {
   },
 
   node: {
+    child_process: 'empty',
+    dgram: 'empty',
+    fs: 'empty',
+    net: 'empty',
     // prevent webpack from injecting useless setImmediate polyfill because Vue
     // source contains it (although only uses it if it's native).
     setImmediate: false,
     // prevent webpack from injecting mocks to Node native modules
     // that does not make sense for the client
-    dgram: 'empty',
-    fs: 'empty',
-    net: 'empty',
     tls: 'empty',
-    child_process: 'empty',
   },
 
   plugins: [
-    // https://webpack.js.org/plugins/provide-plugin/
-    new webpack.ProvidePlugin({
-      fetch: WHATWG_FETCH,
-      'window.fetch': WHATWG_FETCH,
-    }),
+    new VueLoaderPlugin(),
 
     // Smaller lodash builds. We are not opting in to any features.
     // https://github.com/lodash/lodash-webpack-plugin}
@@ -174,5 +203,4 @@ module.exports = {
     // https://github.com/JaKXz/stylelint-webpack-plugin
     ...(config.dev.useStylelint ? [createLintingPlugin()] : []),
   ],
-
 };

@@ -4,11 +4,10 @@
 import Vue from 'vue';
 // https://vuex.vuejs.org/en/installation.html
 import Vuex from 'vuex';
-
-import * as constants from '@/constants';
+import * as constants from 'Src/constants';
 
 // If translations are required in the store.
-// import i18n from '@/i18n';
+// import i18n from 'Src/i18n';
 // i18n.t('foo-bar');
 
 Vue.use(Vuex);
@@ -22,18 +21,14 @@ export default new Vuex.Store({
   },
   getters: {
     ip(state) {
-      const {
-        value,
-      } = state.ip;
+      const {value} = state.ip;
 
       logger.info('Get IP value', value);
 
       return value;
     },
     status(state) {
-      const {
-        status,
-      } = state.ip;
+      const {status} = state.ip;
 
       logger.info('Get IP status', status);
 
@@ -67,31 +62,34 @@ export default new Vuex.Store({
         headers: new Headers({
           [CONTENT_TYPE]: MIMETYPE_JSON,
         }),
-      }).then((response) => {
-        if (response.ok) {
-          const contentType = response.headers.get(CONTENT_TYPE);
+      })
+        .then((response) => {
+          if (response.ok) {
+            const contentType = response.headers.get(CONTENT_TYPE);
 
-          if (contentType && contentType.includes(MIMETYPE_JSON)) {
-            return response.json();
+            if (contentType && contentType.includes(MIMETYPE_JSON)) {
+              return response.json();
+            }
+
+            logger.log(response);
+            throw new TypeError('Expected JSON!');
           }
 
           logger.log(response);
-          throw new TypeError('Expected JSON!');
-        }
+          throw new Error('Network response was not ok!');
+        })
+        .then((pojo) => {
+          logger.log('JSON response', pojo);
+          context.commit('status', constants.READY);
+          context.commit('ip', pojo.ip);
 
-        logger.log(response);
-        throw new Error('Network response was not ok!');
-      }).then((pojo) => {
-        logger.log('JSON response', pojo);
-        context.commit('status', constants.READY);
-        context.commit('ip', pojo.ip);
-
-        return pojo;
-      }).catch((err) => {
-        logger.error(err);
-        context.commit('status', constants.ERROR);
-        context.commit('ip', null);
-      });
+          return pojo;
+        })
+        .catch((err) => {
+          logger.error(err);
+          context.commit('status', constants.ERROR);
+          context.commit('ip', null);
+        });
     },
   },
 });

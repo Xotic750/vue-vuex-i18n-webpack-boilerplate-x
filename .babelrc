@@ -1,46 +1,33 @@
 {
   "presets": [
-    ["env", {
-      "loose": false,
-      "modules": "commonjs",
-      "spec": true,
-      "targets": {
-        "browsers": [
-          "last 3 Chrome versions",
-          "last 3 Firefox versions",
-          "Safari >= 10",
-          "Explorer >= 11",
-          "Edge >= 12",
-          "iOS >= 10",
-          "Android >= 6"
-        ]
-      },
-      "useBuiltIns": "usage"
-    }],
-    "stage-2"
+    [
+      "@babel/preset-env",
+      {
+        "loose": false,
+        "modules": "commonjs",
+        "spec": true,
+        "useBuiltIns": "entry",
+        "debug": false
+      }
+    ]
   ],
   "plugins": [
-    "dynamic-import-node",
+    "@babel/plugin-syntax-dynamic-import",
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-transform-property-mutators",
+    "@babel/plugin-syntax-export-default-from",
+    "@babel/plugin-syntax-export-namespace-from",
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        "corejs": false,
+        "helpers": true,
+        "regenerator": true,
+        "useESModules": false
+      }
+    ],
     "js-logger",
     "lodash",
-    "transform-class-properties",
-    "transform-es5-property-mutators",
-    "transform-object-rest-spread",
-    "transform-runtime",
     "transform-vue-jsx"
-  ],
-  "env": {
-    "development": {
-      "presets": [],
-      "plugins": []
-    },
-    "production": {
-      "presets": [],
-      "plugins": []
-    },
-    "test": {
-      "presets": [],
-      "plugins": []
-    }
-  }
+  ]
 }

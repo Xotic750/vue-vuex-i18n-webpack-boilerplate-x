@@ -13,7 +13,7 @@ module.exports = {
   ],
 
   moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1',
+    '^@/(.*)$': '<rootDir>/Src/$1',
     '^~/(.*)$': '<rootDir>/$1',
     // https://facebook.github.io/jest/docs/en/manual-mocks.html#content
     // https://facebook.github.io/jest/docs/en/webpack.html
@@ -47,9 +47,9 @@ module.exports = {
   coverageDirectory: '<rootDir>/test/unit/coverage',
 
   collectCoverageFrom: [
-    'src/**/*.{js,jsx,vue}',
-    '!src/main.js',
-    '!src/router/index.js',
+    'Src/**/*.{js,jsx,vue}',
+    '!Src/main.js',
+    '!Src/router/index.js',
     '!**/node_modules/**',
   ],
 };

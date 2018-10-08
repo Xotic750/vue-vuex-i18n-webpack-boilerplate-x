@@ -4,11 +4,10 @@
 import Vue from 'vue';
 // https://www.iviewui.com/docs/guide/start-en#Import_iView
 import iView from 'iview';
-import 'iview/dist/styles/iview.css';
 // https://lodash.com/
 import noop from 'lodash/noop';
 
-import i18n from '@/i18n';
+import i18n from 'Src/i18n';
 
 Vue.use(iView);
 

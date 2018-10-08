@@ -1,6 +1,10 @@
-/dist/
-/test/unit/coverage/
-/node_modules/
 !.eslintrc.js
 !.stylelintrc.js
-!.postcssrc.js
+!postcss.config.js
+/__tests__/unit/coverage/
+!Storybook/.storybook/
+Storybook/Lib/
+dist/
+node_modules/
+package-lock.json
+

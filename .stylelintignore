@@ -1,3 +1,5 @@
-/test/unit/coverage/
+/__tests__/unit/coverage/
 /dist/
 /node_modules/
+!Storybook/.storybook/
+Storybook/Lib/

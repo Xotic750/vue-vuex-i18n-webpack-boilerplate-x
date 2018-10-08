@@ -1,20 +1,17 @@
+import 'whatwg-fetch';
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 // https://vuejs.org/v2/guide/installation.html
 import Vue from 'vue';
-
-import '@/logger';
-import '@/sentry';
-import '@/iview';
-import '@/click_outside';
-import store from '@/store';
-import i18n from '@/i18n';
-import App from '@/App.vue';
-import router from '@/router';
-import {
-  name,
-  version,
-} from '~/package.json';
+import 'Src/logger';
+import 'Src/sentry';
+import 'Src/iview';
+import 'Src/click_outside';
+import store from 'Src/store';
+import i18n from 'Src/i18n';
+import App from 'Src/App.vue';
+import router from 'Src/router';
+import {name, version} from 'RootDir/package.json';
 
 logger.info(`${name} v${version}`);
 

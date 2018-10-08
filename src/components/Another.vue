@@ -47,8 +47,6 @@
 </template>
 
 <script>
-import '@/styles/Another.css';
-
 export default {
   name: 'Another',
 };
@@ -56,6 +54,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+@import '../../src/styles/Another.css';
+
 #lipsum {
   width: 60%;
   margin: 0 auto;

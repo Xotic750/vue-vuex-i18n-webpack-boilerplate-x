@@ -13,19 +13,17 @@ import localeSv from './locale/sv-SE';
 
 // Locale messages.
 const messages = {
-  en: ({
+  en: {
     ...iViewLocaleEn,
     ...localeEn,
-  }),
-  sv: ({
+  },
+  sv: {
     ...iViewLocaleSv,
     ...localeSv,
-  }),
+  },
 };
 
-const {
-  NODE_ENV,
-} = process.env;
+const {NODE_ENV} = process.env;
 
 const isProduction = NODE_ENV === 'production';
 

@@ -1,17 +1,15 @@
-const utils = require('./utils');
 const webpack = require('webpack');
-const config = require('../config');
 const merge = require('webpack-merge');
 const path = require('path');
-const baseWebpackConfig = require('./webpack.base.conf');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const portfinder = require('portfinder');
+const baseWebpackConfig = require('./webpack.base.conf');
+const config = require('../config');
+const utils = require('./utils');
 
-const {
-  HOST,
-} = process.env;
+const {HOST} = process.env;
 
 const PORT = process.env.PORT && Number(process.env.PORT);
 
@@ -51,12 +49,12 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 
     open: config.dev.autoOpenBrowser,
 
-    overlay: config.dev.errorOverlay ?
-      {
-        warnings: false,
-        errors: true,
-      } :
-      false,
+    overlay: config.dev.errorOverlay
+      ? {
+          warnings: false,
+          errors: true,
+        }
+      : false,
 
     publicPath: config.dev.assetsPublicPath,
 
@@ -69,10 +67,10 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     },
   },
 
+  mode: 'development',
+
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env': require('../config/dev.env'),
-    }),
+    new webpack.EnvironmentPlugin(require('../config/dev.env')),
 
     new webpack.HotModuleReplacementPlugin(),
 
@@ -112,12 +110,14 @@ module.exports = new Promise((resolve, reject) => {
       devWebpackConfig.devServer.port = port;
 
       // Add FriendlyErrorsPlugin
-      devWebpackConfig.plugins.push(new FriendlyErrorsPlugin({
-        compilationSuccessInfo: {
-          messages: [`Your application is running here: http://${devWebpackConfig.devServer.host}:${port}`],
-        },
-        onErrors: config.dev.notifyOnErrors ? utils.createNotifierCallback() : undefined,
-      }));
+      devWebpackConfig.plugins.push(
+        new FriendlyErrorsPlugin({
+          compilationSuccessInfo: {
+            messages: [`Your application is running here: http://${devWebpackConfig.devServer.host}:${port}`],
+          },
+          onErrors: config.dev.notifyOnErrors ? utils.createNotifierCallback() : undefined,
+        }),
+      );
 
       resolve(devWebpackConfig);
     }

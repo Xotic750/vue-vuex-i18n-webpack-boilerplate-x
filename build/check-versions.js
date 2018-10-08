@@ -1,9 +1,13 @@
 const chalk = require('chalk');
 const semver = require('semver');
-const packageConfig = require('../package.json');
 const shell = require('shelljs');
+const packageConfig = require('../package.json');
 
-const exec = cmd => require('child_process').execSync(cmd).toString().trim();
+const exec = (cmd) =>
+  require('child_process')
+    .execSync(cmd)
+    .toString()
+    .trim();
 
 const versionRequirements = [
   {
@@ -27,16 +31,13 @@ module.exports = () => {
       return accumulator;
     }
 
-    return [
-      ...accumulator,
-      `${mod.name}: ${chalk.red(mod.currentVersion)} should be ${chalk.green(mod.versionRequirement)}`,
-    ];
+    return [...accumulator, `${mod.name}: ${chalk.red(mod.currentVersion)} should be ${chalk.green(mod.versionRequirement)}`];
   }, []);
 
   if (warnings.length) {
     console.log('/n%s/n', chalk.yellow('To use this template, you must update following to modules:'));
 
-    warnings.forEach(warning => console.log(`  ${warning}`));
+    warnings.forEach((warning) => console.log(`  ${warning}`));
 
     console.log();
     process.exit(1);

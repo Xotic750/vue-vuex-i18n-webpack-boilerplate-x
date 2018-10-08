@@ -69,4 +69,4 @@ yarn-error.log*
 *.njsproj
 *.sln
 sandbox/
-/test/unit/coverage/
+/__tests__/unit/coverage/

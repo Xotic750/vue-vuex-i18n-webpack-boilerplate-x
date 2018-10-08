@@ -6,28 +6,38 @@
       <li>
         <a
           href="https://vuejs.org"
-        >Core Docs</a>
+        >
+          Core Docs
+        </a>
       </li>
       <li>
         <a
           href="https://forum.vuejs.org"
-        >Forum</a>
+        >
+          Forum
+        </a>
       </li>
       <li>
         <a
           href="https://chat.vuejs.org"
-        >Community Chat</a>
+        >
+          Community Chat
+        </a>
       </li>
       <li>
         <a
           href="https://twitter.com/vuejs"
-        >Twitter</a>
+        >
+          Twitter
+        </a>
       </li>
       <br>
       <li>
         <a
           href="http://vuejs-templates.github.io/webpack/"
-        >Docs for This Template</a>
+        >
+          Docs for This Template
+        </a>
       </li>
     </ul>
     <h2>Ecosystem</h2>
@@ -36,22 +46,30 @@
         <a
           href="http://router.vuejs.org/"
           target="_blank"
-        >vue-router</a>
+        >
+          vue-router
+        </a>
       </li>
       <li>
         <a
           href="http://vuex.vuejs.org/"
-        >vuex</a>
+        >
+          vuex
+        </a>
       </li>
       <li>
         <a
           href="http://vue-loader.vuejs.org/"
-        >vue-loader</a>
+        >
+          vue-loader
+        </a>
       </li>
       <li>
         <a
           href="https://github.com/vuejs/awesome-vue"
-        >awesome-vue</a>
+        >
+          awesome-vue
+        </a>
       </li>
     </ul>
   </div>
@@ -59,7 +77,6 @@
 
 <script>
 import identity from 'lodash/identity';
-import '@/styles/HelloWorld.css';
 
 export default {
   name: 'HelloWorld',
@@ -82,6 +99,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+@import '../../src/styles/HelloWorld.css';
+
 h1,
 h2 {
   font-weight: normal;

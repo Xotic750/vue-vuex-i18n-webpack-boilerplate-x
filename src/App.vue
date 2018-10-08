@@ -1,23 +1,29 @@
 <template>
   <div id="app">
-    <Breadcrumb>
-      <BreadcrumbItem
+    <breadcrumb>
+      <breadcrumb-item
         to="/"
-      >Home</BreadcrumbItem>
-      <BreadcrumbItem
+      >
+        Home
+      </breadcrumb-item>
+      <breadcrumb-item
         to="/another"
-      >Another</BreadcrumbItem>
-    </Breadcrumb>
+      >
+        Another
+      </breadcrumb-item>
+    </breadcrumb>
     <div id="wrapper">
       <div id="display-time">
-        <Tag
+        <tag
           v-if="show"
           closable
           @on-close="handleClose"
-        >{{ time }}</Tag>
+        >
+          {{ time }}
+        </tag>
       </div>
       <div id="language-chooser">
-        <Tooltip
+        <tooltip
           placement="left"
           :content="changeLanguage"
         >
@@ -27,30 +33,34 @@
           >
             <Option
               v-for="language in languages"
-              :value="language"
               :key="language"
-            >{{ language }}</Option>
+              :value="language"
+            >
+              {{ language }}
+            </Option>
           </Select>
-        </Tooltip>
+        </tooltip>
       </div>
       <div id="logo">
         <img src="./assets/logo.png">
       </div>
     </div>
-    <router-view/>
+    <router-view></router-view>
     <Button
       id="ip-address"
-      type="ghost"
+      type="default"
+      :ghost="true"
       @click="fetchIp"
-    >{{ fetchIpLabel }}</Button>
+    >
+      {{ fetchIpLabel }}
+    </Button>
   </div>
 </template>
 
 <script>
 import identity from 'lodash/identity';
 import moment from 'moment';
-import * as constants from '@/constants';
-import '@/styles/App.css';
+import * as constants from 'Src/constants';
 
 export default {
   name: 'App',
@@ -173,10 +183,11 @@ export default {
 </script>
 
 <style>
+@import '~iview/dist/styles/iview.css';
+@import '../src/styles/App.css';
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
   padding-top: 60px;
